@@ -24,10 +24,11 @@ export function Skills() {
 
         <StaggerContainer className="space-y-8">
           {Object.entries(
-            site.skills.reduce<Record<string, typeof site.skills>>(
+            site.skills.reduce<Record<string, typeof site.skills[number][]>>(
               (acc, skill) => {
-                if (!acc[skill.category]) acc[skill.category] = [];
-                acc[skill.category].push(skill);
+                const cat = skill.category;
+                if (!acc[cat]) acc[cat] = [];
+                acc[cat].push(skill);
                 return acc;
               },
               {}

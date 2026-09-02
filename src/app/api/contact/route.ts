@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     const { data, error } = await resend.emails.send({
       from: "KingMille Portfolio <onboarding@resend.dev>",
       to: [process.env.CONTACT_EMAIL || "hello@kingmille.dev"],
-      reply_to: email,
+      replyTo: email,
       subject: `Portfolio Contact: ${subject}`,
       html: `
         <h2>New message from your portfolio</h2>
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, id: data?.id });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 }

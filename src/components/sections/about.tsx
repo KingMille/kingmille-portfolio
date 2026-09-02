@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Palette, Code2, Bot, Brain, LineChart } from "lucide-react";
+import { Palette, Code2, Bot, Brain } from "lucide-react";
 import { Reveal } from "@/components/animations/Reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 

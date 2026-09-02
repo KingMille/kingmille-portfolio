@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { Github, Linkedin, Twitter, Instagram, Mail, Heart } from "lucide-react";
+import { Mail, Heart } from "lucide-react";
+import {
+  GithubIcon,
+  LinkedinIcon,
+  XIcon,
+  InstagramIcon,
+} from "@/components/ui/social-icons";
 
 export function Footer() {
   return (
@@ -25,7 +31,7 @@ export function Footer() {
                 className="text-muted-foreground transition-colors hover:text-primary"
                 aria-label="GitHub"
               >
-                <Github size={20} />
+                <GithubIcon />
               </Link>
               <Link
                 href="https://linkedin.com"
@@ -34,16 +40,16 @@ export function Footer() {
                 className="text-muted-foreground transition-colors hover:text-primary"
                 aria-label="LinkedIn"
               >
-                <Linkedin size={20} />
+                <LinkedinIcon />
               </Link>
               <Link
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground transition-colors hover:text-primary"
-                aria-label="Twitter"
+                aria-label="X (Twitter)"
               >
-                <Twitter size={20} />
+                <XIcon />
               </Link>
               <Link
                 href="https://instagram.com"
@@ -52,7 +58,7 @@ export function Footer() {
                 className="text-muted-foreground transition-colors hover:text-primary"
                 aria-label="Instagram"
               >
-                <Instagram size={20} />
+                <InstagramIcon />
               </Link>
               <Link
                 href="mailto:hello@kingmille.dev"

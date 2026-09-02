@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { GithubIcon } from "@/components/ui/social-icons";
 import { Reveal } from "@/components/animations/Reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { TiltCard } from "@/components/animations/Effects";
@@ -167,7 +168,7 @@ export function Work() {
                           className="ml-auto text-muted-foreground transition-colors hover:text-primary"
                           aria-label="View code"
                         >
-                          <Github size={18} />
+                          <GithubIcon />
                         </button>
                       </div>
                     </div>
