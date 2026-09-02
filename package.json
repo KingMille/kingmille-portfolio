@@ -1,0 +1,44 @@
+{
+  "name": "kingmille-portfolio",
+  "version": "1.0.0",
+  "description": "KingMille - Portfolio website for a graphic designer, UI/UX and robotics enthusiast",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [
+    "portfolio",
+    "designer",
+    "ui-ux",
+    "robotics"
+  ],
+  "type": "module",
+  "dependencies": {
+    "@sanity/client": "^8.4.0",
+    "@sanity/image-url": "^2.1.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^13.1.1",
+    "lucide-react": "^1.39.0",
+    "motion-dom": "^13.1.1",
+    "motion-utils": "^13.0.0",
+    "next": "^16.3.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "resend": "^6.25.0",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.4",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}
