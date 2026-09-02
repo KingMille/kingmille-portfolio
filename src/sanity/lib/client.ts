@@ -80,3 +80,23 @@ export async function getBlogPostBySlug(slug: string) {
     { slug }
   );
 }
+
+export async function getSiteSettings() {
+  return client.fetch(`*[_type == "siteSettings"][0] {
+    title,
+    tagline,
+    heroIntro,
+    aboutText,
+    email,
+    social
+  }`);
+}
+
+export async function getSkills() {
+  return client.fetch(`*[_type == "skill"] | order(order asc) {
+    _id,
+    name,
+    level,
+    category
+  }`);
+}

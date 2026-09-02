@@ -1,9 +1,16 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Palette, Code2, Bot, Brain } from "lucide-react";
 import { Reveal } from "@/components/animations/Reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
+
+const defaultAbout = [
+  "I'm a graphic designer who loves building things that live at the intersection of creativity and technology. My journey spans UI/UX design, where I craft intuitive interfaces, to Python and Django development, where I bring those designs to life with robust backend solutions.",
+  "Beyond the screen, I'm fascinated by robotics and AI automation - building machines and systems that can think, learn, and create. Whether it's designing a brand identity, coding a web app, or wiring up a robot, I approach every project with curiosity and a dedication to quality.",
+  "When I'm not designing or coding, you'll find me exploring data-driven insights, experimenting with AI tools, or tinkering with hardware in my workshop.",
+];
 
 const pillars = [
   {
@@ -41,6 +48,34 @@ const pillars = [
 ];
 
 export function About() {
+  const [paragraphs, setParagraphs] = useState<string[]>(defaultAbout);
+
+  useEffect(() => {
+    const fetchAbout = async () => {
+      try {
+        const res = await fetch("/api/site");
+        const data = await res.json();
+        if (
+          data.settings &&
+          data.settings.aboutText &&
+          Array.isArray(data.settings.aboutText) &&
+          data.settings.aboutText.length > 0
+        ) {
+          const text = data.settings.aboutText
+            .map((block: { children?: { text?: string }[] }) =>
+              block?.children?.map((c) => c.text).join(" ")
+            )
+            .filter(Boolean)
+            .join("\n\n");
+          if (text.trim()) setParagraphs(text.split("\n\n").filter((p: string) => p.trim()));
+        }
+      } catch {
+        // keep defaults
+      }
+    };
+    fetchAbout();
+  }, []);
+
   return (
     <section id="about" className="py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -52,25 +87,18 @@ export function About() {
 
         <div className="grid gap-12 lg:grid-cols-2">
           <Reveal type="slideLeft">
-            <p className="text-lg leading-relaxed text-muted-foreground">
-              I&apos;m a graphic designer who loves building things that live at
-              the intersection of creativity and technology. My journey spans
-              UI/UX design, where I craft intuitive interfaces, to Python and
-              Django development, where I bring those designs to life with
-              robust backend solutions.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-              Beyond the screen, I&apos;m fascinated by robotics and AI
-              automation - building machines and systems that can think, learn,
-              and create. Whether it&apos;s designing a brand identity, coding a
-              web app, or wiring up a robot, I approach every project with
-              curiosity and a dedication to quality.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-              When I&apos;m not designing or coding, you&apos;ll find me
-              exploring data-driven insights, experimenting with AI tools, or
-              tinkering with hardware in my workshop.
-            </p>
+            {paragraphs.map((text, i) => (
+              <p
+                key={i}
+                className={
+                  i === 0
+                    ? "text-lg leading-relaxed text-muted-foreground"
+                    : "mt-4 text-lg leading-relaxed text-muted-foreground"
+                }
+              >
+                {text}
+              </p>
+            ))}
           </Reveal>
 
           <div className="grid gap-6 sm:grid-cols-2">
