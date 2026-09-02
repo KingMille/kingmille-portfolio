@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { GithubIcon } from "@/components/ui/social-icons";
@@ -143,102 +144,15 @@ export function Work() {
                 transition={{ duration: 0.4 }}
               >
                 <TiltCard className="group h-full">
-                  <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background/50 shadow-card backdrop-blur transition-all duration-300 group-hover:shadow-card-hover">
-                    {/* Project image or gradient */}
-                    <div className="relative h-56 overflow-hidden">
-                      {"coverImage" in project && project.coverImage ? (
-                        <Image
-                          src={urlFor(project.coverImage).url()}
-                          alt={project.title}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div
-                          className={`h-full bg-gradient-to-br ${
-                            placeholderGradients[project.category] || "from-primary to-secondary"
-                          }`}
-                        >
-                          <div className="bg-grid absolute inset-0 opacity-20" />
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-white/80">
-                            <span className="font-display text-lg font-semibold drop-shadow">
-                              {project.title}
-                            </span>
-                            {!usingSanity && (
-                              <span className="mt-1 text-sm opacity-70">
-                                Demo coming soon
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                        style={{ transform: "translateZ(40px)" }}
-                      />
-                    </div>
-
-                    <div className="flex flex-1 flex-col p-6">
-                      <span className="mb-3 inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                        {categories.find((c) => c.id === project.category)
-                          ?.label || project.category}
-                      </span>
-                      <h3 className="mb-2 font-display text-xl font-semibold">
-                        {project.title}
-                      </h3>
-                      <p className="mb-4 flex-1 text-sm text-muted-foreground">
-                        {project.description}
-                      </p>
-                      {"tags" in project && project.tags && (
-                        <div className="mb-5 flex flex-wrap gap-2">
-                          {project.tags.map((tag: string) => (
-                            <span
-                              key={tag}
-                              className="rounded-full bg-border/50 px-2.5 py-0.5 text-xs text-muted-foreground"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      <div className="flex items-center gap-4 border-t border-border pt-4">
-                        {"liveUrl" in project && project.liveUrl ? (
-                          <a
-                            href={project.liveUrl as string}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-all hover:gap-2.5"
-                          >
-                            View Live
-                            <ArrowUpRight size={16} />
-                          </a>
-                        ) : (
-                          <button className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-all hover:gap-2.5">
-                            View Case Study
-                            <ArrowUpRight size={16} />
-                          </button>
-                        )}
-                        {"githubUrl" in project && project.githubUrl ? (
-                          <a
-                            href={project.githubUrl as string}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-auto text-muted-foreground transition-colors hover:text-primary"
-                            aria-label="View code"
-                          >
-                            <GithubIcon />
-                          </a>
-                        ) : (
-                          <button
-                            className="ml-auto text-muted-foreground transition-colors hover:text-primary"
-                            aria-label="View code"
-                          >
-                            <GithubIcon />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <ProjectCardContent
+                    project={project}
+                    usingSanity={usingSanity}
+                    href={
+                      "slug" in project
+                        ? `/projects/${(project.slug as { current: string }).current}`
+                        : undefined
+                    }
+                  />
                 </TiltCard>
               </motion.div>
             ))}
@@ -246,5 +160,127 @@ export function Work() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function ProjectCardContent({
+  project,
+  usingSanity,
+  href,
+}: {
+  project: {
+    _id: string;
+    title: string;
+    category: string;
+    description: string;
+    coverImage?: unknown;
+    tags?: string[];
+    liveUrl?: unknown;
+    githubUrl?: unknown;
+  };
+  usingSanity: boolean;
+  href?: string;
+}) {
+  return (
+    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background/50 shadow-card backdrop-blur transition-all duration-300 group-hover:shadow-card-hover">
+      {href && (
+        <Link
+          href={href}
+          aria-label={`View ${project.title}`}
+          className="absolute inset-0 z-10"
+        />
+      )}
+      <div className="relative h-56 overflow-hidden">
+        {project.coverImage ? (
+          <Image
+            src={urlFor(project.coverImage).url()}
+            alt={project.title}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div
+            className={`h-full bg-gradient-to-br ${
+              placeholderGradients[project.category] || "from-primary to-secondary"
+            }`}
+          >
+            <div className="bg-grid absolute inset-0 opacity-20" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-white/80">
+              <span className="font-display text-lg font-semibold drop-shadow">
+                {project.title}
+              </span>
+              {!usingSanity && (
+                <span className="mt-1 text-sm opacity-70">Demo coming soon</span>
+              )}
+            </div>
+          </div>
+        )}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ transform: "translateZ(40px)" }}
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-6">
+        <span className="mb-3 inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          {categories.find((c) => c.id === project.category)?.label ||
+            project.category}
+        </span>
+        <h3 className="mb-2 font-display text-xl font-semibold">
+          {project.title}
+        </h3>
+        <p className="mb-4 flex-1 text-sm text-muted-foreground">
+          {project.description}
+        </p>
+        {project.tags && (
+          <div className="mb-5 flex flex-wrap gap-2">
+            {project.tags.map((tag: string) => (
+              <span
+                key={tag}
+                className="rounded-full bg-border/50 px-2.5 py-0.5 text-xs text-muted-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="relative z-20 flex items-center gap-4 border-t border-border pt-4">
+          {project.liveUrl ? (
+            <a
+              href={project.liveUrl as string}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-all hover:gap-2.5"
+            >
+              View Live
+              <ArrowUpRight size={16} />
+            </a>
+          ) : (
+            <button className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-all hover:gap-2.5">
+              View Case Study
+              <ArrowUpRight size={16} />
+            </button>
+          )}
+          {project.githubUrl ? (
+            <a
+              href={project.githubUrl as string}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-auto text-muted-foreground transition-colors hover:text-primary"
+              aria-label="View code"
+            >
+              <GithubIcon />
+            </a>
+          ) : (
+            <button
+              className="ml-auto text-muted-foreground transition-colors hover:text-primary"
+              aria-label="View code"
+            >
+              <GithubIcon />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
