@@ -104,31 +104,54 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="relative mx-auto w-full max-w-md"
         >
-          {/* Animated ring */}
-          <motion.div
-            className="absolute -inset-4 rounded-full border-2 border-dashed border-primary/30"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          />
-
           {/* Main image */}
-          <div className="relative overflow-hidden rounded-3xl">
+          <motion.div
+            className="group relative"
+            whileHover="hover"
+            initial="rest"
+            animate="rest"
+          >
+            {/* Animated ring */}
             <motion.div
-              className="relative"
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Image
-                src="/images/me.png"
-                alt="KingMille"
-                width={1177}
-                height={1337}
-                className="h-full w-full object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/50 to-transparent" />
-            </motion.div>
-          </div>
+              className="absolute -inset-4 rounded-3xl border-2 border-dashed border-primary/30"
+              variants={{
+                rest: { rotate: 0, scale: 1, opacity: 0.6 },
+                hover: {
+                  rotate: 360,
+                  scale: 1.12,
+                  opacity: 1,
+                },
+              }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+            />
+
+            <div className="relative overflow-hidden rounded-3xl shadow-card transition-shadow duration-500 group-hover:shadow-[0_20px_60px_-15px_rgba(255,107,107,0.5)]">
+              <motion.div
+                className="relative"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <motion.div
+                  variants={{
+                    rest: { scale: 1 },
+                    hover: { scale: 1.1 },
+                  }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="origin-bottom"
+                >
+                  <Image
+                    src="/images/me.png"
+                    alt="KingMille"
+                    width={1177}
+                    height={1337}
+                    className="h-full w-full object-cover"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark/50 to-transparent" />
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.div>
 
           {/* Floating skill badges */}
           <motion.div
