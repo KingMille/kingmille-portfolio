@@ -1,12 +1,14 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Calendar, Bot } from "lucide-react";
 import { Reveal } from "@/components/animations/Reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 
-const posts = [
+const placeholderPosts = [
   {
+    _id: "blog-1",
     title: "Getting Started with Robotics Programming",
     excerpt:
       "A beginner's guide to entering the world of robotics - from choosing your first microcontroller to writing basic control logic.",
@@ -15,6 +17,7 @@ const posts = [
     tag: "Robotics",
   },
   {
+    _id: "blog-2",
     title: "AI Automation in Everyday Life",
     excerpt:
       "How intelligent automation is reshaping the way we work, create, and interact with technology around us.",
@@ -23,6 +26,7 @@ const posts = [
     tag: "AI",
   },
   {
+    _id: "blog-3",
     title: "Designing for Robotics: UX Meets Hardware",
     excerpt:
       "Exploring the unique challenges and opportunities when designing user interfaces for robotic systems.",
@@ -33,6 +37,23 @@ const posts = [
 ];
 
 export function BlogPreview({ homepage = true }: { homepage?: boolean }) {
+  const [posts, setPosts] = useState(placeholderPosts);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("/api/blog");
+        const data = await res.json();
+        if (data.posts && data.posts.length > 0) {
+          setPosts(data.posts);
+        }
+      } catch {
+        // Keep placeholder posts
+      }
+    };
+    fetchPosts();
+  }, []);
+
   const displayPosts = homepage ? posts.slice(0, 3) : posts;
 
   return (
@@ -46,11 +67,8 @@ export function BlogPreview({ homepage = true }: { homepage?: boolean }) {
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {displayPosts.map((post, index) => (
-            <Reveal key={post.title} delay={index * 0.1}>
-              <Link
-                href="/blog"
-                className="group block h-full"
-              >
+            <Reveal key={post._id} delay={index * 0.1}>
+              <Link href="/blog" className="group block h-full">
                 <article className="flex h-full flex-col rounded-2xl border border-border bg-background/50 p-6 shadow-card backdrop-blur transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-card-hover">
                   <div className="mb-4 flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/20">
